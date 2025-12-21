@@ -33,6 +33,7 @@ pub enum AppError {
 }
 
 #[derive(TS, Serialize, Clone)]
+#[ts(export, export_to = "../../types/ErrorResponse.d.ts")]
 pub struct ErrorResponse {
     pub code: String,
     pub message: String,
@@ -132,8 +133,8 @@ impl AppError {
         AppError::NotFound(resource.to_string())
     }
 
-    pub fn validation(message: &str) -> Self {
-        AppError::Validation(message.to_string())
+    pub fn validation(message: String) -> Self {
+        AppError::Validation(message)
     }
 
     pub fn duplicate(field: &str) -> Self {

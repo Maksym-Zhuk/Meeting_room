@@ -32,7 +32,7 @@ fn get_jwt_secret() -> String {
 }
 
 fn get_access_token_duration() -> i64 {
-    env::var("ACCESS_TOKEN_DURATION_MINUTES")
+    env::var("ACCESS_TOKEN_DURATION")
         .ok()
         .and_then(|s| s.parse::<i64>().ok())
         .unwrap_or(1)
