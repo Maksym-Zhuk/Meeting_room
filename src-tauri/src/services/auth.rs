@@ -8,10 +8,11 @@ use uuid::Uuid;
 use validator::Validate;
 
 use crate::{
-    entity::user::{self, ActiveModel as User},
+    entity::user::{self, ActiveModel as NewUser},
     enums::role::Role,
     errors::AppError,
     inputs::{login::LoginInput, register::RegisterInput},
+    models::user::User,
     responses::auth::AuthResponse,
     utils::{
         hash::{hash_password, verify_password},
@@ -31,7 +32,7 @@ pub async fn register(
 
     let txn = db.begin().await?;
 
-    let new_user = User {
+    let new_user = NewUser {
         id: Set(Uuid::new_v4()),
         email: Set(input.email),
         username: Set(input.username),
@@ -47,7 +48,13 @@ pub async fn register(
 
     txn.commit().await?;
 
-    Ok(AuthResponse { token, user })
+    Ok(AuthResponse {
+        token,
+        user: User {
+            username: user.username,
+            email: user.email,
+        },
+    })
 }
 
 pub async fn login(input: LoginInput, db: &DatabaseConnection) -> Result<AuthResponse, AppError> {
@@ -66,5 +73,11 @@ pub async fn login(input: LoginInput, db: &DatabaseConnection) -> Result<AuthRes
     let role = Role::from_str(&user.role)?;
     let token = generate_token(user.id.to_string(), role)?;
 
-    Ok(AuthResponse { token, user })
+    Ok(AuthResponse {
+        token,
+        user: User {
+            username: user.username,
+            email: user.email,
+        },
+    })
 }

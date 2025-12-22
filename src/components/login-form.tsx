@@ -18,23 +18,11 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { invoke } from "@tauri-apps/api/core";
 import { store } from "@/utils/token";
+import { AuthResponse } from "@/types/auth";
 
 type LoginFormValues = {
   email: string;
   password: string;
-};
-
-type AuthResponse = {
-  token: string;
-  user: {
-    id: string;
-    username: string;
-    email: string;
-    password: string;
-    role: string;
-    updated_at: string;
-    created_at: string;
-  };
 };
 
 export function LoginForm({

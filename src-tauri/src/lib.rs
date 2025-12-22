@@ -3,6 +3,7 @@ use tauri::Manager;
 use crate::commands::{
     auth::{login, register},
     stronghold_key::{get_or_create_stronghold_key, reset_stronghold},
+    user::get_user_info,
 };
 use crate::config::init;
 
@@ -13,6 +14,7 @@ mod entity;
 mod enums;
 mod errors;
 mod inputs;
+mod models;
 mod responses;
 mod services;
 mod utils;
@@ -48,7 +50,8 @@ pub fn run() {
             register,
             login,
             get_or_create_stronghold_key,
-            reset_stronghold
+            reset_stronghold,
+            get_user_info
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

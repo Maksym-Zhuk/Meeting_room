@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::entity::user::Model as User;
+use crate::models::user::User;
 
 #[derive(Serialize, Clone)]
 pub struct AuthResponse {

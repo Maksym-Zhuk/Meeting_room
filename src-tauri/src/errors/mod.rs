@@ -1,6 +1,7 @@
 use serde::Serialize;
 use thiserror::Error;
 use ts_rs::TS;
+use uuid::Error as UuidError;
 
 #[derive(Debug, Error)]
 pub enum AppError {
@@ -145,5 +146,11 @@ impl AppError {
 impl From<argon2::password_hash::Error> for AppError {
     fn from(_: argon2::password_hash::Error) -> Self {
         AppError::Hash
+    }
+}
+
+impl From<UuidError> for AppError {
+    fn from(_: UuidError) -> Self {
+        AppError::InvalidUUID
     }
 }
