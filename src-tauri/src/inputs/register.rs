@@ -3,7 +3,7 @@ use ts_rs::TS;
 use validator::Validate;
 
 #[derive(TS, Debug, Deserialize, Validate)]
-#[ts(export, export_to = "../../types/input/RegisterInput.d.ts")]
+#[ts(export, export_to = "../../types/inputs/RegisterInput.d.ts")]
 pub struct RegisterInput {
     #[validate(email(message = "Invalid email format"))]
     pub email: String,

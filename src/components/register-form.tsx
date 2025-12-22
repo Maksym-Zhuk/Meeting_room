@@ -15,11 +15,12 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { invoke } from "@tauri-apps/api/core";
+import { useNavigate } from "react-router";
 import { store } from "@/utils/token";
 
-type LoginFormValues = {
+type RegisterFormValues = {
+  username: string;
   email: string;
   password: string;
 };
@@ -37,7 +38,7 @@ type AuthResponse = {
   };
 };
 
-export function LoginForm({
+export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
@@ -45,13 +46,14 @@ export function LoginForm({
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormValues>();
+  } = useForm<RegisterFormValues>();
   let navigate = useNavigate();
 
-  const onSubmit = async (data: LoginFormValues) => {
+  const onSubmit = async (data: RegisterFormValues) => {
     try {
-      const res: AuthResponse = await invoke("login", {
+      const res: AuthResponse = await invoke("register", {
         input: {
+          username: data.username,
           email: data.email,
           password: data.password,
         },
@@ -69,17 +71,33 @@ export function LoginForm({
   };
 
   return (
-    <div className={cn("w-90 flex flex-col gap-6", className)} {...props}>
+    <div className={cn("w-105 flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Create your account</CardTitle>
           <CardDescription>
-            Enter your email and password to login
+            Enter your details below to create a new account
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="username">Username</FieldLabel>
+                <Input
+                  id="username"
+                  placeholder="your username"
+                  {...register("username", {
+                    required: "Username is required",
+                  })}
+                />
+                {errors.username && (
+                  <FieldDescription className="text-red-500">
+                    {errors.username.message}
+                  </FieldDescription>
+                )}
+              </Field>
+
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -119,10 +137,10 @@ export function LoginForm({
 
               <Field>
                 <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Logging in..." : "Login"}
+                  {isSubmitting ? "Registering..." : "Register"}
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="/register">Sign up</a>
+                  Already have an account? <a href="/login">Login</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>
