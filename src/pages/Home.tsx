@@ -6,11 +6,17 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/SideBar/app-sidebar";
 import { User } from "types/models/User";
 import { invoke } from "@tauri-apps/api/core";
+import { CalendarEvent, Mode } from "@/types/calendar-types";
+import Calendar from "@/components/calendar/calendar";
 
 export default function Home() {
   const [token, setToken] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
   const [userInfo, setUserInfo] = useState<User | null>(null);
+
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [mode, setMode] = useState<Mode>("day");
+  const [date, setDate] = useState<Date>(new Date());
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -43,6 +49,16 @@ export default function Home() {
     <SidebarProvider>
       <div className="w-full min-h-dvh flex items-center bg-black text-white p-5">
         <AppSidebar userInfo={userInfo!} />
+        <div className="flex flex-col w-full">
+          <Calendar
+            events={events}
+            setEvents={setEvents}
+            mode={mode}
+            setMode={setMode}
+            date={date}
+            setDate={setDate}
+          />
+        </div>
       </div>
     </SidebarProvider>
   );
