@@ -2,7 +2,7 @@ use sea_orm::DatabaseConnection;
 use tauri::State;
 
 use crate::{
-    errors::ErrorResponse, models::user::User, services::user,
+    errors::ErrorResponse, responses::users::User, services::user,
     utils::jwt::extract_user_id_from_token,
 };
 

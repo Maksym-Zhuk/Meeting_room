@@ -8,12 +8,12 @@ use uuid::Uuid;
 use validator::Validate;
 
 use crate::{
-    entity::user::{self, ActiveModel as NewUser},
+    entity::users::{self, ActiveModel as NewUser},
     enums::role::Role,
     errors::AppError,
     inputs::{login::LoginInput, register::RegisterInput},
-    models::user::User,
     responses::auth::AuthResponse,
+    responses::users::User,
     utils::{
         hash::{hash_password, verify_password},
         jwt::generate_token,
@@ -58,8 +58,8 @@ pub async fn register(
 }
 
 pub async fn login(input: LoginInput, db: &DatabaseConnection) -> Result<AuthResponse, AppError> {
-    let user = user::Entity::find()
-        .filter(user::Column::Email.eq(input.email))
+    let user = users::Entity::find()
+        .filter(users::Column::Email.eq(input.email))
         .one(db)
         .await?;
 

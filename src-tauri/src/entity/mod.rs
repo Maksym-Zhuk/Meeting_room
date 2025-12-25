@@ -2,5 +2,9 @@
 
 pub mod prelude;
 
-pub mod room;
-pub mod user;
+pub mod booking_members;
+pub mod bookings;
+pub mod organization_members;
+pub mod organizations;
+pub mod rooms;
+pub mod users;

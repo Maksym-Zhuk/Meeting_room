@@ -2,9 +2,9 @@ use tauri::Manager;
 
 use crate::commands::{
     auth::{login, register},
-    room::{create_room, delete_room, get_rooms_for_user, update_room},
+    // rooms::{create_room, delete_room, get_rooms_for_user, update_room},
     stronghold_key::{get_or_create_stronghold_key, reset_stronghold},
-    user::get_user_info,
+    users::get_user_info,
 };
 use crate::config::init;
 
@@ -15,7 +15,6 @@ mod entity;
 mod enums;
 mod errors;
 mod inputs;
-mod models;
 mod responses;
 mod services;
 mod utils;
@@ -53,10 +52,10 @@ pub fn run() {
             get_or_create_stronghold_key,
             reset_stronghold,
             get_user_info,
-            create_room,
-            update_room,
-            delete_room,
-            get_rooms_for_user
+            // create_room,
+            // update_room,
+            // delete_room,
+            // get_rooms_for_user
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

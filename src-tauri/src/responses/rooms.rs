@@ -5,10 +5,6 @@ use ts_rs::TS;
 #[ts(export, export_to = "../../types/models/Room.d.ts")]
 pub struct Room {
     pub id: String,
-    pub title: String,
-    pub start: i64,
-    pub end: i64,
-    pub creator: String,
-    pub members: Vec<String>,
-    pub admins: Vec<String>,
+    pub name: String,
+    pub organization_id: String,
 }
