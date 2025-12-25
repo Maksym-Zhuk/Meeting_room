@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router";
 import { store } from "@/utils/token";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/SideBar/app-sidebar";
+import { AppSidebar } from "@/components/side-bar/app-sidebar";
 import { User } from "types/models/User";
 import { invoke } from "@tauri-apps/api/core";
 import { CalendarEvent, Mode } from "@/types/calendar-types";

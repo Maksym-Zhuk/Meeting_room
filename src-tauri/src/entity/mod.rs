@@ -2,4 +2,5 @@
 
 pub mod prelude;
 
+pub mod room;
 pub mod user;

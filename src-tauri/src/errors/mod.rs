@@ -26,11 +26,17 @@ pub enum AppError {
     #[error("{0} not found")]
     NotFound(String),
 
+    #[error("Forbidden")]
+    Forbidden,
+
     #[error("Validation error: {0}")]
     Validation(String),
 
     #[error("Duplicate entry: {0}")]
     Duplicate(String),
+
+    #[error("Other error: {0}")]
+    Other(String),
 }
 
 #[derive(TS, Serialize, Clone)]
@@ -91,6 +97,12 @@ impl From<AppError> for ErrorResponse {
                 details: None,
             },
 
+            AppError::Forbidden => ErrorResponse {
+                code: "FORBIDDEN".to_string(),
+                message: "You do not have permission to perform this action".to_string(),
+                details: None,
+            },
+
             AppError::InvalidUUID => ErrorResponse {
                 code: "INVALID_UUID".to_string(),
                 message: "Invalid UUID format".to_string(),
@@ -115,6 +127,12 @@ impl From<AppError> for ErrorResponse {
                 code: "DUPLICATE_ENTRY".to_string(),
                 message: format!("{} already exists", field),
                 details: None,
+            },
+
+            AppError::Other(msg) => ErrorResponse {
+                code: "INTERNAL_ERROR".to_string(),
+                message: "An unexpected error occurred".to_string(),
+                details: Some(msg),
             },
         }
     }
@@ -152,5 +170,11 @@ impl From<argon2::password_hash::Error> for AppError {
 impl From<UuidError> for AppError {
     fn from(_: UuidError) -> Self {
         AppError::InvalidUUID
+    }
+}
+
+impl From<serde_json::Error> for AppError {
+    fn from(e: serde_json::Error) -> Self {
+        AppError::Other(format!("JSON error: {}", e))
     }
 }
