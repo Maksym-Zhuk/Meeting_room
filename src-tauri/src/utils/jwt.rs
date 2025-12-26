@@ -1,4 +1,4 @@
-use crate::enums::role::Role;
+use crate::enums::roles::Role;
 use crate::errors::AppError;
 use chrono::{Duration, Utc};
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};

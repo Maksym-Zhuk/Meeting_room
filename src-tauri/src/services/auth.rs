@@ -9,7 +9,7 @@ use validator::Validate;
 
 use crate::{
     entity::users::{self, ActiveModel as NewUser},
-    enums::role::Role,
+    enums::roles::Role,
     errors::AppError,
     inputs::{login::LoginInput, register::RegisterInput},
     responses::auth::AuthResponse,
@@ -51,6 +51,7 @@ pub async fn register(
     Ok(AuthResponse {
         token,
         user: User {
+            id: user.id.to_string(),
             username: user.username,
             email: user.email,
         },
@@ -76,6 +77,7 @@ pub async fn login(input: LoginInput, db: &DatabaseConnection) -> Result<AuthRes
     Ok(AuthResponse {
         token,
         user: User {
+            id: user.id.to_string(),
             username: user.username,
             email: user.email,
         },

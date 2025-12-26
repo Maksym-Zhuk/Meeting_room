@@ -7,6 +7,7 @@ use crate::errors::AppError;
 
 #[derive(TS, Debug, Serialize, Deserialize, Clone, PartialEq, Copy)]
 #[ts(export, export_to = "../../types/enums/Role.d.ts")]
+#[serde(rename_all = "lowercase")]
 pub enum Role {
     Admin,
     User,

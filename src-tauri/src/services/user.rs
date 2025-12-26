@@ -13,6 +13,7 @@ pub async fn get_user_info(user_id: String, db: &DatabaseConnection) -> Result<U
     };
 
     Ok(User {
+        id: user.id.to_string(),
         username: user.username,
         email: user.email,
     })
