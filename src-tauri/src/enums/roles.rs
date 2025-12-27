@@ -1,3 +1,4 @@
+use core::fmt;
 use std::str::FromStr;
 
 use serde::{Deserialize, Serialize};
@@ -21,6 +22,15 @@ impl FromStr for Role {
             "admin" => Ok(Role::Admin),
             "user" => Ok(Role::User),
             _ => Err(AppError::validation("invalid role".into())),
+        }
+    }
+}
+
+impl fmt::Display for Role {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Role::Admin => write!(f, "admin"),
+            Role::User => write!(f, "user"),
         }
     }
 }

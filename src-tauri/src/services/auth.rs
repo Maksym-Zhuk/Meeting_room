@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+use chrono::Utc;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, Set,
     TransactionTrait,
@@ -37,8 +38,9 @@ pub async fn register(
         email: Set(input.email),
         username: Set(input.username),
         password: Set(password_hash),
-        role: Set("user".to_string()),
-        ..Default::default()
+        role: Set(Role::User.to_string()),
+        created_at: Set(Utc::now().timestamp()),
+        updated_at: Set(Utc::now().timestamp()),
     };
 
     let user = new_user.insert(&txn).await?;

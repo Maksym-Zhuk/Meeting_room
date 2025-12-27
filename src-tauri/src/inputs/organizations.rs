@@ -5,7 +5,7 @@ use validator::Validate;
 
 #[derive(TS, Debug, Deserialize, Validate)]
 #[ts(export, export_to = "../../types/inputs/CreateOrganizationInput.d.ts")]
-pub struct OrganizationInput {
+pub struct CreateOrganizationInput {
     #[validate(length(max = 255))]
     pub name: String,
 }

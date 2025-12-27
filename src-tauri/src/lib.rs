@@ -2,6 +2,14 @@ use tauri::Manager;
 
 use crate::commands::{
     auth::{login, register},
+    organization_members::{
+        change_organization_member_role, create_organization_member, delete_organization_member,
+        get_all_organization_member, get_organization_member,
+    },
+    organizations::{
+        create_organization, delete_organization, get_organization, get_organization_for_user,
+        update_organization,
+    },
     // rooms::{create_room, delete_room, get_rooms_for_user, update_room},
     stronghold_key::{get_or_create_stronghold_key, reset_stronghold},
     users::get_user_info,
@@ -56,6 +64,16 @@ pub fn run() {
             // update_room,
             // delete_room,
             // get_rooms_for_user
+            create_organization,
+            update_organization,
+            delete_organization,
+            get_organization_for_user,
+            get_organization,
+            create_organization_member,
+            change_organization_member_role,
+            delete_organization_member,
+            get_all_organization_member,
+            get_organization_member
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

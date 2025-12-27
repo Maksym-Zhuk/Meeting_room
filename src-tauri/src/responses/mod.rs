@@ -4,4 +4,5 @@ pub mod bookings;
 pub mod organization_members;
 pub mod organizations;
 pub mod rooms;
+pub mod text;
 pub mod users;

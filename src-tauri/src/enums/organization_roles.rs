@@ -1,5 +1,7 @@
+use core::fmt;
 use std::str::FromStr;
 
+use sea_orm::DeriveActiveEnum;
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
@@ -23,6 +25,16 @@ impl FromStr for OrganizationRole {
             "admin" => Ok(OrganizationRole::Admin),
             "member" => Ok(OrganizationRole::Member),
             _ => Err(AppError::validation("invalid role".into())),
+        }
+    }
+}
+
+impl fmt::Display for OrganizationRole {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            OrganizationRole::Owner => write!(f, "owner"),
+            OrganizationRole::Admin => write!(f, "admin"),
+            OrganizationRole::Member => write!(f, "member"),
         }
     }
 }

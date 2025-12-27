@@ -20,9 +20,6 @@ pub struct CreateOrganizationMemberInput {
     #[validate(custom(function = "validate_uuid"))]
     pub organization_id: String,
 
-    #[validate(custom(function = "validate_uuid"))]
-    pub user_id: String,
-
     #[validate(custom(function = "validate_role"))]
     pub role: OrganizationRole,
 }
