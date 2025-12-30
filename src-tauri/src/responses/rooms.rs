@@ -7,5 +7,5 @@ pub struct Room {
     pub id: String,
     pub name: String,
     pub organization_id: String,
-    pub creator_id: String,
+    pub created_by: String,
 }

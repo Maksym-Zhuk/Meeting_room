@@ -10,7 +10,7 @@ use crate::commands::{
         create_organization, delete_organization, get_organization, get_organization_for_user,
         update_organization,
     },
-    // rooms::{create_room, delete_room, get_rooms_for_user, update_room},
+    rooms::{create_room, delete_room, get_room_for_organization, update_room},
     stronghold_key::{get_or_create_stronghold_key, reset_stronghold},
     users::get_user_info,
 };
@@ -60,10 +60,10 @@ pub fn run() {
             get_or_create_stronghold_key,
             reset_stronghold,
             get_user_info,
-            // create_room,
-            // update_room,
-            // delete_room,
-            // get_rooms_for_user
+            create_room,
+            update_room,
+            delete_room,
+            get_room_for_organization,
             create_organization,
             update_organization,
             delete_organization,

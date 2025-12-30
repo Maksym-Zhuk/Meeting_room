@@ -94,13 +94,13 @@ pub async fn get_organization_for_user(
     user_id: String,
     db: &DatabaseConnection,
 ) -> Result<Vec<Organization>, AppError> {
-    let organization = organizations::Entity::find()
+    let organizations = organizations::Entity::find()
         .inner_join(organization_members::Entity)
-        .filter(organization_members::Column::UserId.eq(&user_id))
+        .filter(organization_members::Column::UserId.eq(Uuid::parse_str(&user_id)?))
         .all(db)
         .await?;
 
-    let result = organization
+    let result = organizations
         .into_iter()
         .map(|o| Organization {
             id: o.id.to_string(),

@@ -18,5 +18,5 @@ pub struct UpdateRoomInput {
     #[validate(custom(function = "validate_uuid"))]
     pub id: String,
 
-    pub name: Option<String>,
+    pub name: String,
 }
