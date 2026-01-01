@@ -2,6 +2,7 @@ use tauri::Manager;
 
 use crate::commands::{
     auth::{login, register},
+    bookings::{create_booking, delete_booking, get_all_room_bookings, update_booking},
     organization_members::{
         change_organization_member_role, create_organization_member, delete_organization_member,
         get_all_organization_member, get_organization_member,
@@ -73,7 +74,11 @@ pub fn run() {
             change_organization_member_role,
             delete_organization_member,
             get_all_organization_member,
-            get_organization_member
+            get_organization_member,
+            create_booking,
+            update_booking,
+            delete_booking,
+            get_all_room_bookings
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,7 +1,6 @@
 use core::fmt;
 use std::str::FromStr;
 
-use sea_orm::DeriveActiveEnum;
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 
