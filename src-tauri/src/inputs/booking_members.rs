@@ -10,6 +10,5 @@ pub struct CreateBookingMemberInput {
     #[validate(custom(function = "validate_uuid"))]
     pub booking_id: String,
 
-    #[validate(custom(function = "validate_uuid"))]
-    pub user_id: String,
+    pub email: String,
 }
