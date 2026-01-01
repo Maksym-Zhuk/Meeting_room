@@ -1,3 +1,6 @@
+use lettre::address::AddressError;
+use lettre::error::Error as LettreError;
+use lettre::transport::smtp::Error as SmtpError;
 use serde::Serialize;
 use thiserror::Error;
 use ts_rs::TS;
@@ -34,6 +37,9 @@ pub enum AppError {
 
     #[error("Duplicate entry: {0}")]
     Duplicate(String),
+
+    #[error("Email error: {0}")]
+    Email(String),
 
     #[error("Other error: {0}")]
     Other(String),
@@ -111,6 +117,12 @@ impl From<AppError> for ErrorResponse {
                 ),
             },
 
+            AppError::Email(msg) => ErrorResponse {
+                code: "EMAIL_ERROR".to_string(),
+                message: "Failed to send email".to_string(),
+                details: Some(msg),
+            },
+
             AppError::NotFound(resource) => ErrorResponse {
                 code: "NOT_FOUND".to_string(),
                 message: format!("{} not found", resource),
@@ -176,5 +188,23 @@ impl From<UuidError> for AppError {
 impl From<serde_json::Error> for AppError {
     fn from(e: serde_json::Error) -> Self {
         AppError::Other(format!("JSON error: {}", e))
+    }
+}
+
+impl From<LettreError> for AppError {
+    fn from(err: LettreError) -> Self {
+        AppError::Email(err.to_string())
+    }
+}
+
+impl From<AddressError> for AppError {
+    fn from(err: AddressError) -> Self {
+        AppError::Email(format!("Invalid email address: {}", err))
+    }
+}
+
+impl From<SmtpError> for AppError {
+    fn from(err: SmtpError) -> Self {
+        AppError::Email(format!("SMTP error: {}", err))
     }
 }

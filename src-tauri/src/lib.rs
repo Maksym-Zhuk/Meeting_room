@@ -1,22 +1,27 @@
+use std::env;
+
 use tauri::Manager;
 
-use crate::commands::{
-    auth::{login, register},
-    booking_members::{add_booking_member, delete_booking_member, get_all_booking_member},
-    bookings::{create_booking, delete_booking, get_all_room_bookings, update_booking},
-    organization_members::{
-        change_organization_member_role, create_organization_member, delete_organization_member,
-        get_all_organization_member, get_organization_member,
-    },
-    organizations::{
-        create_organization, delete_organization, get_organization, get_organization_for_user,
-        update_organization,
-    },
-    rooms::{create_room, delete_room, get_room_for_organization, update_room},
-    stronghold_key::{get_or_create_stronghold_key, reset_stronghold},
-    users::get_user_info,
-};
 use crate::config::init;
+use crate::{
+    commands::{
+        auth::{login, register},
+        booking_members::{add_booking_member, delete_booking_member, get_all_booking_member},
+        bookings::{create_booking, delete_booking, get_all_room_bookings, update_booking},
+        organization_members::{
+            change_organization_member_role, create_organization_member,
+            delete_organization_member, get_all_organization_member, get_organization_member,
+        },
+        organizations::{
+            create_organization, delete_organization, get_organization, get_organization_for_user,
+            update_organization,
+        },
+        rooms::{create_room, delete_room, get_room_for_organization, update_room},
+        stronghold_key::{get_or_create_stronghold_key, reset_stronghold},
+        users::get_user_info,
+    },
+    utils::email::EmailService,
+};
 
 mod commands;
 mod config;
@@ -35,6 +40,14 @@ pub fn run() {
 
     let db = tauri::async_runtime::block_on(db::establish_connection())
         .expect("Failed to connect to database");
+
+    let email_service = EmailService::new(
+        &env::var("SMTP_HOST").expect("SMTP_HOST must be set in .env file"),
+        env::var("SMTP_USERNAME").expect("SMTP_USERNAME must be set in .env file"),
+        env::var("SMTP_PASSWORD").expect("SMTP_PASSWORD must be set in .env file"),
+        env::var("FROM_EMAIL").expect("FROM_EMAIL must be set in .env file"),
+    )
+    .expect("Failed to initialize email service");
 
     tauri::Builder::default()
         .plugin(tauri_plugin_store::Builder::new().build())
@@ -55,7 +68,8 @@ pub fn run() {
             Ok(())
         })
         .plugin(tauri_plugin_opener::init())
-        .manage(db.clone())
+        .manage(db)
+        .manage(email_service)
         .invoke_handler(tauri::generate_handler![
             register,
             login,

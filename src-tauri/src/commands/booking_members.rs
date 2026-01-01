@@ -6,7 +6,7 @@ use crate::{
     inputs::booking_members::CreateBookingMemberInput,
     responses::{booking_members::BookingMembers, text::Response},
     services::booking_members,
-    utils::{jwt::extract_user_id_from_token, validator::validate_input},
+    utils::{email::EmailService, jwt::extract_user_id_from_token, validator::validate_input},
 };
 
 #[tauri::command]
@@ -14,11 +14,12 @@ pub async fn add_booking_member(
     token: String,
     input: CreateBookingMemberInput,
     db: State<'_, DatabaseConnection>,
+    email_service: State<'_, EmailService>,
 ) -> Result<Response, ErrorResponse> {
     extract_user_id_from_token(&token)?;
     validate_input(&input)?;
 
-    booking_members::add_booking_member(input, db.inner())
+    booking_members::add_booking_member(input, db.inner(), email_service.inner())
         .await
         .map_err(ErrorResponse::from)
 }
